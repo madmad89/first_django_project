@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Create a new student {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Create a new student</h3>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            {{ form.as_p }}
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-outline-success">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{# vechiul form : #}
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }} {# form este o variabila de la jango si ia fildurile si le pune in formular #}
+{# as_p este formularea fild-urilor sub forma de paragraf din html #}
+{#        <button type="submit">Save</button>#}
+{#    </form>#}

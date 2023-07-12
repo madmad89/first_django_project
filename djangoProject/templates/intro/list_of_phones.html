@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} List of phones {% endblock %}
+
+
+{% block content %}
+
+    <table class="table table-info table-striped">
+        <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Release</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for phone in phones %}
+                <tr>
+                    <td>{{ phone.brand }}</td>
+                    <td>{{ phone.model }}</td>
+                    <td>{{ phone.release }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+            <a href="{% url 'list-of-cars' %}" class="btn btn-outline-warning">Go to list of cars </a>
+{% endblock %}

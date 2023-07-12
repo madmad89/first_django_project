@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %} List of students {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Filters</h3>
+                    </div>
+                    <form method="GET">
+                        <div class="card-body">
+                            {{ form_filters.as_p }}
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-outline-success">Search</button>
+                            <a href="{% url 'list-of-students' %}" class="btn btn-outline-danger">Reset</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="text-center alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if all_students %}
+                    <table class="table">
+                        <thead>
+                        <th>No.</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Active</th>
+                        <th>Start date</th>
+                        <th>Created date</th>
+                        <th>Name of trainer</th>
+                        <th>Name of course</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        {% for student in all_students %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ student.first_name }}</td>
+                                <td>{{ student.last_name }}</td>
+                                <td>
+                                    {% if student.active %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </td>
+                                <td>{{ student.start_date|date:"d-m-Y" }}</td>
+                                <td>{{ student.created_at|date:"d-m-Y H:i:s" }}</td>
+                                <td>
+                                    {% if student.trainer %}
+                                        {{ student.trainer }}
+                                    {% else %}
+                                        No trainer
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if student.trainer.course %}
+                                        {{ student.trainer.course }}
+                                    {% else %}
+                                        No course
+                                    {% endif %}
+                                </td>
+                                <td>
+                                {% if perms.student.change_student or  perms.student.delete_student or  perms.student.view_student   %}
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-success dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            More actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {% if perms.student.change_student %}
+                                            <li><a class="dropdown-item" href="{% url 'update-student' student.id %}">Update</a></li>
+                                            {% endif %}
+                                            {% if perms.student.delete_student %}
+                                            <li><a class="dropdown-item" href="{% url 'delete-student' student.id %}">Delete</a></li>
+                                            {% endif %}
+                                            {% if perms.student.view_student %}
+                                            <li><a class="dropdown-item" href="{% url 'details-student' student.id %}">View</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h3 class="text-center">No stundent </h3>
+                {% endif %}
+
+
+            </div>
+            {#            {{ current_date|date:"d-m-Y H:i:s" }}#}
+            {#                {% for trainer in get_all_trainers %}#}
+            {#                    <p>{{ trainer.first_name }} {{ trainer.last_name }}</p>#}
+            {#                    <p>{{ trainer.course }}</p>#}
+            {#                    <p>----------------</p>#}
+            {#        {% endfor %}#}
+        </div>
+    </div>
+{% endblock %}
